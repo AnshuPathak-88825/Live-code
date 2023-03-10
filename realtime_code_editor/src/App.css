@@ -1,38 +1,81 @@
-.App {
-  text-align: center;
-}
+.HomePageWrapper {
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  height: 100vh;
+  color: #fff;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 
-.App-link {
-  color: #61dafb;
 }
+.FormWrapper
+{
+  background: #282a35;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+}
+.inputGroup
+{
+  display: flex;
+  flex-direction: column;
+}
+.Mainlabel
+{
+  margin-bottom: 20px;
+  margin-top: 0px;
+}
+.homePageLogo
+{
+  height: 80px;
+  margin-bottom: 30px;
+
+}
+.inputBox
+{
+  padding: 10px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  margin-bottom: 14px;
+  background: #eee;
+  font-size: 15px;
+  font-weight: bold;
+}
+.btn
+{
+  border:none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size:15px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.joinBtn
+{
+  background:#4aed88;
+  width: 100px;
+  margin-left: auto ;
+
+}
+.joinBtn:hover{
+  background: #2b824c;
+}
+.createInfo
+{
+  margin: 0 auto;
+  margin-top: 20px;
+}
+.createNewBtn
+{
+  color: #4aed88;
+  text-decoration: none;
+  border-bottom: 1px solid #4aed88;
+  transition: all 0.3s ease-in-out;
+
+} 
+.createNewBtn:hover{
+  color: #368650;
+  border-color: #368650;
 }
