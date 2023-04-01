@@ -48,7 +48,7 @@
   width: 100px;
   margin-left: auto;
 }
-.joinBtn,.leaveBtn:hover {
+.joinBtn:hover,.leaveBtn:hover {
   background: #2b824c;
 }
 .createInfo {

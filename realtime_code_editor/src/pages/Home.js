@@ -21,7 +21,7 @@ const Home = () => {
         }
         navigate(`/editor/${roomId}`,{
             state:{
-                UserName,
+                UserName,roomId
             }
         })
 
