@@ -9,7 +9,10 @@ const EditorPage = () => {
   const navigate = useNavigate();
   const socketRef = useRef(null);
   const location = useLocation();
-  console.log(location);
+  const [clients, setclients] = useState([
+    { socketId: 1, username: "Rakesh k" },
+    { socketId: 2, username: "Aanshu" },
+  ]);
   useEffect(() => {
     const init = async () => {
       socketRef.current = await initSocket();
@@ -26,8 +29,17 @@ const EditorPage = () => {
       }
       socketRef.current.emit(ACTIONS.JOIN, {
         roomId: location.state.roomId,
-        Username: location.state.userName,
+        Username: location.state.UserName,
       });
+      socketRef.current.on(
+        ACTIONS.JOINED,
+        ({ clients, Username, socketid }) => {
+          if (Username != location.state.UserName) {
+            toast.success(`${Username} joined`);
+          }
+          setclients(clients);
+        }
+      );
     };
 
     if (!location.state) {
@@ -36,11 +48,6 @@ const EditorPage = () => {
     }
     init();
   }, []);
-
-  const [clients, setclients] = useState([
-    { socketId: 1, username: "Rakesh k" },
-    { socketId: 2, username: "Aanshu" },
-  ]);
 
   return (
     <div className="minWrap">

@@ -8,7 +8,6 @@ const Editor = () => {
   let change = (e) => {
     setcode(e);
   };
-  console.log(code);
   return (
     <CodeMirror
       value={code}
