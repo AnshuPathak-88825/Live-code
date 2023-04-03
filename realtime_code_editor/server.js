@@ -24,13 +24,27 @@ io.on("connection", (socket) => {
     userSocketMap[socket.id] = Username;
     socket.join(roomId);
     const clients = getAllconnectedClients(roomId);
-    clients.forEach(({socketId})=>{
-      io.to(socketId).emit(ACTION.JOINED,{
+    clients.forEach(({ socketId }) => {
+      io.to(socketId).emit(ACTION.JOINED, {
         clients,
         Username,
-        socketid:socket.id
+        socketid: socket.id,
+      });
+    });
+    socket.on("disconnecting", () => {
+      const rooms = [...socket.rooms];
+      rooms.forEach((roomId)=>{
+        socket.in(roomId).emit(ACTION.DISCONNECTED,{
+          socketId:socket.id,
+          username:userSocketMap[socket.id],
+
+        })
       })
-    })
+      delete userSocketMap[socket.id];
+      socket.leave();
+      
+    
+    });
   });
 });
 const PORT = process.env.PORT || 5000;

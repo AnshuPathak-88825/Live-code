@@ -40,6 +40,14 @@ const EditorPage = () => {
           setclients(clients);
         }
       );
+      socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
+        toast.success(`${username} left the room.`);
+        setclients((prev) => {
+          return prev.filter((client) => {
+            return client.socketId !== socketId;
+          });
+        });
+      });
     };
 
     if (!location.state) {
@@ -47,6 +55,7 @@ const EditorPage = () => {
       return navigate("/");
     }
     init();
+    
   }, []);
 
   return (
