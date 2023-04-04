@@ -9,6 +9,7 @@ const EditorPage = () => {
   const navigate = useNavigate();
   const socketRef = useRef(null);
   const location = useLocation();
+  const roomId=location.state.roomId;
   const [clients, setclients] = useState([
     { socketId: 1, username: "Rakesh k" },
     { socketId: 2, username: "Aanshu" },
@@ -81,7 +82,7 @@ const EditorPage = () => {
         <button className="btn leaveBtn">Leave</button>
       </div>
       <div className="editorwrap">
-        <Editor />
+        <Editor socketRef={socketRef} roomId={roomId}/>
       </div>
     </div>
   );

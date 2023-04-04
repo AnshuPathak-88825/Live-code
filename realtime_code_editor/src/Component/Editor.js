@@ -1,13 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { dracula, okaidia } from "@uiw/codemirror-theme-dracula";
-const Editor = () => {
+import ACTIONS from "../Actions";
+const Editor = ({ socketRef, roomId }) => {
   const [code, setcode] = useState("console.log('hello world!');");
-
-  let change = (e) => {
-    setcode(e);
-  };
+  console.log(code);
+  // useEffect(() => {
+  //   const init = () => {
+  //     socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+  //       roomId,
+  //       code,
+  //     });
+  //   };
+  //   if (socketRef.current != null) {
+  //     init();
+  //   }
+  // }, [socketRef.current]);
+  const onChange = React.useCallback((value, viewUpdate) => {
+    const init = () => {
+      socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+        roomId,
+        value,
+      });
+    };
+    if (socketRef.current != null) {
+      init();
+    }
+  }, []);
   return (
     <CodeMirror
       value={code}
@@ -18,7 +38,7 @@ const Editor = () => {
         paddingTop: "20px",
       }}
       extensions={[javascript({ jsx: true })]}
-      onChange={change}
+      onChange={onChange}
       theme={dracula}
     />
   );

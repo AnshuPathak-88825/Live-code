@@ -33,18 +33,18 @@ io.on("connection", (socket) => {
     });
     socket.on("disconnecting", () => {
       const rooms = [...socket.rooms];
-      rooms.forEach((roomId)=>{
-        socket.in(roomId).emit(ACTION.DISCONNECTED,{
-          socketId:socket.id,
-          username:userSocketMap[socket.id],
-
-        })
-      })
+      rooms.forEach((roomId) => {
+        socket.in(roomId).emit(ACTION.DISCONNECTED, {
+          socketId: socket.id,
+          username: userSocketMap[socket.id],
+        });
+      });
       delete userSocketMap[socket.id];
       socket.leave();
-      
-    
     });
+  });
+  socket.on(ACTION.CODE_CHANGE, ({ roomId, value }) => {
+    console.log(value);
   });
 });
 const PORT = process.env.PORT || 5000;
