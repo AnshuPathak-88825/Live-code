@@ -5,7 +5,7 @@ import { dracula, okaidia } from "@uiw/codemirror-theme-dracula";
 import ACTIONS from "../Actions";
 const Editor = ({ socketRef, roomId }) => {
   const [code, setcode] = useState("console.log('hello world!');");
-  console.log(code);
+  // console.log(code);
   // useEffect(() => {
   //   const init = () => {
   //     socketRef.current.emit(ACTIONS.CODE_CHANGE, {
@@ -17,13 +17,19 @@ const Editor = ({ socketRef, roomId }) => {
   //     init();
   //   }
   // }, [socketRef.current]);
+
   const onChange = React.useCallback((value, viewUpdate) => {
     const init = () => {
       socketRef.current.emit(ACTIONS.CODE_CHANGE, {
         roomId,
         value,
       });
+      socketRef.current.on(ACTIONS.CODE_CHANGE, ({ roomId, value }) => {
+        console.log(value);
+        setcode(value);
+      });
     };
+
     if (socketRef.current != null) {
       init();
     }

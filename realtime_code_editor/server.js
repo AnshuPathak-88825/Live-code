@@ -44,7 +44,10 @@ io.on("connection", (socket) => {
     });
   });
   socket.on(ACTION.CODE_CHANGE, ({ roomId, value }) => {
-    console.log(value);
+    console.log(value)
+    io.to(roomId).emit(ACTION.CODE_CHANGE,{
+      value
+    })
   });
 });
 const PORT = process.env.PORT || 5000;
