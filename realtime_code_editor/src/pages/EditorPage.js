@@ -58,6 +58,11 @@ const EditorPage = () => {
     init();
     
   }, []);
+  function copyBtn()
+  {
+    toast.success('Room Id has been copied to you clipboard');
+    return navigator.clipboard.writeText(roomId);
+  }
 
   return (
     <div className="minWrap">
@@ -78,7 +83,7 @@ const EditorPage = () => {
             ))}
           </div>
         </div>
-        <button className="btn copyBtn">Copy Room ID</button>
+        <button className="btn copyBtn" onClick={copyBtn}>Copy Room ID</button>
         <button className="btn leaveBtn">Leave</button>
       </div>
       <div className="editorwrap">
