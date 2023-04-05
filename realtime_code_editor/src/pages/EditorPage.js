@@ -84,7 +84,7 @@ const EditorPage = () => {
           </div>
         </div>
         <button className="btn copyBtn" onClick={copyBtn}>Copy Room ID</button>
-        <button className="btn leaveBtn">Leave</button>
+        <a href="/" className="btn leaveBtn">Leave</a>
       </div>
       <div className="editorwrap">
         <Editor socketRef={socketRef} roomId={roomId}/>
