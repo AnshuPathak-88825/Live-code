@@ -4,10 +4,10 @@ LiveCode is a web-based code editor that allows multiple users to collaborate on
 [Demo](https://user-images.githubusercontent.com/78332454/235987727-322776cc-58c7-4c64-a402-8f0df3c64a35.webm)
 
 ## Getting Started
-To get started with Realtime Code Editor, you can either download the source code from the GitHub repository or clone it using the following command:
+To get started with Live-code Editor, you can either download the source code from the GitHub repository or clone it using the following command:
 
 ```
-git clone https://github.com/AnshuPathak-88825/realtime_code_editor.git
+git clone https://github.com/AnshuPathak-88825/Live-code.git
 cd Live-code
 cd realtime_code_editor/
 npm install
@@ -21,7 +21,7 @@ Real-time collaboration on the same code file
 - Real-time collaboration on the same code file
 - Syntax highlighting for popular programming languages
 ## Contributing
-If you would like to contribute to Realtime Code Editor, please fork the repository and create a pull request. You can also report any issues or bugs by creating a GitHub issue.
+If you would like to contribute to Live-code, please fork the repository and create a pull request. You can also report any issues or bugs by creating a GitHub issue.
 ## Credits
 LiveCode Editor was created by [Anshu Pathak](https://github.com/AnshuPathak-88825). Special thanks to the following projects for their contributions:
 
