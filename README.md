@@ -1,5 +1,8 @@
 # LiveCode
 LiveCode is a web-based code editor that allows multiple users to collaborate on the same code file in real-time. It is built using Node.js, Express, Socket.io , Reactjs.
+## Demo
+[Demo](https://user-images.githubusercontent.com/78332454/235987727-322776cc-58c7-4c64-a402-8f0df3c64a35.webm)
+
 ## Getting Started
 To get started with Realtime Code Editor, you can either download the source code from the GitHub repository or clone it using the following command:
 
