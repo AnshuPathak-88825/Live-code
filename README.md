@@ -22,6 +22,8 @@ Real-time collaboration on the same code file
 - Syntax highlighting for popular programming languages
 ## Contributing
 If you would like to contribute to Live-code, please fork the repository and create a pull request. You can also report any issues or bugs by creating a GitHub issue.
+If you are willing to fix an issue or propose a feature, all PRs with clear explanations are welcome and encouraged.
+If you have any doubts related to the project or want to discuss something, then join our [Discord Server](https://discord.gg/2grH8kzn).
 ## Credits
 LiveCode Editor was created by [Anshu Pathak](https://github.com/AnshuPathak-88825). Special thanks to the following projects for their contributions:
 
@@ -30,7 +32,3 @@ LiveCode Editor was created by [Anshu Pathak](https://github.com/AnshuPathak-888
 - Socket.io
 - Reactjs
 - Css
-## Contact
-If you have any questions or comments about LiveCode Editor, you can contact Anshu Pathak at [shubhanshupathak88825@gmail.com
-].
-
