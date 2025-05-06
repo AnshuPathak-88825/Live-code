@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { coderunner } from "../utils/code_runner";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { python } from "@codemirror/lang-python";
@@ -17,13 +18,13 @@ import { tokyoNight } from "@uiw/codemirror-theme-tokyo-night";
 import ACTIONS from "../Actions";
 const Editor = ({ socketRef, roomId }) => {
   const languageMap = {
-    javascript: javascript(),
-    python: python(),
-    java: java(),
-    cpp: cpp(),
-    html: html(),
-    css: css(),
-    markdown: markdown(),
+    javascript: { language: javascript(), id: 102 },
+    python: { language: python(), id: 92 },
+    java: { language: java(), id: 91 },
+    cpp: { language: cpp(), id: 105 },
+    html: { language: html(), id: 102 },
+    css: { language: css(), id: 102 },
+    markdown: { language: markdown(), id: 102 },
   };
   const themeMap = {
     dracula: dracula,
@@ -33,7 +34,11 @@ const Editor = ({ socketRef, roomId }) => {
     tokyoNight: tokyoNight,
   };
   const [language, setLanguage] = useState("javascript");
+  const [input, setInput] = useState("");
   const [theme, setTheme] = useState("dracula");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState("");
+  const [loader, setLoader] = useState(false);
   const [code, setcode] = useState(`function debounce(func, delay) {
 let timer;
   return function(...args) {
@@ -67,6 +72,31 @@ window.addEventListener("resize", debouncedFetch);
       init();
     }
   }, []);
+  const runCode = () => {
+    setLoader(true);
+    setOutput("");
+    setError("");
+    coderunner(code, input, languageMap[language].id)
+      .then((result) => {
+        console.log(result);
+        if (result.decodedOutput) {
+          setOutput(result.decodedOutput);
+        } else if (result.decodedStderr) {
+          setError(result.decodedStderr);
+        } else if (result.decodedCompileOutput) {
+          setError(result.decodedCompileOutput);
+        } else {
+          setError("Unknown error occurred.");
+        }
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+        setError(err);
+      })
+      .finally(() => {
+        setLoader(false);
+      });
+  };
   return (
     <div>
       <div className="flex justify-between items-center bg-gray-800 p-2">
@@ -90,12 +120,12 @@ window.addEventListener("resize", debouncedFetch);
       <CodeMirror
         value={code}
         style={{
-          height: "100vh-20vh",
+          height: "80vh-20vh",
           fontSize: "16px",
           lineHeight: 5,
           paddingTop: "20px",
         }}
-        extensions={[languageMap[language]]}
+        extensions={[languageMap[language].language]}
         onChange={onChange}
         theme={themeMap[theme]}
         basicSetup={{
@@ -106,6 +136,23 @@ window.addEventListener("resize", debouncedFetch);
           lint: true,
         }}
       />
+      <div>
+        <div>
+          <textarea type="text" onChange={(e) => setInput(e.target.value)} />
+        </div>
+        <div>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+            onClick={() => {
+              runCode();
+            }}
+          >
+            Run Code
+          </button>
+        </div>
+        <div>{loader && <div>loading..</div>}</div>
+        <div>{!loader && error && <div>{error}</div>}</div>
+      </div>
     </div>
   );
 };
