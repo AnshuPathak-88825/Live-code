@@ -7,7 +7,13 @@ import { cpp } from "@codemirror/lang-cpp";
 import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
 import { markdown } from "@codemirror/lang-markdown";
-import { dracula, okaidia } from "@uiw/codemirror-theme-dracula";
+
+import { dracula } from "@uiw/codemirror-theme-dracula";
+import { okaidia } from "@uiw/codemirror-theme-okaidia";
+import { monokai } from "@uiw/codemirror-theme-monokai";
+import { nord } from "@uiw/codemirror-theme-nord";
+import { tokyoNight } from "@uiw/codemirror-theme-tokyo-night";
+
 import ACTIONS from "../Actions";
 const Editor = ({ socketRef, roomId }) => {
   const languageMap = {
@@ -19,9 +25,31 @@ const Editor = ({ socketRef, roomId }) => {
     css: css(),
     markdown: markdown(),
   };
+  const themeMap = {
+    dracula: dracula,
+    okaidia: okaidia,
+    monokai: monokai,
+    nord: nord,
+    tokyoNight: tokyoNight,
+  };
   const [language, setLanguage] = useState("javascript");
   const [theme, setTheme] = useState("dracula");
-  const [code, setcode] = useState("console.log('hello world!');");
+  const [code, setcode] = useState(`function debounce(func, delay) {
+let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+
+const fetchData = () => {
+  console.log("Fetching data from server...");
+};
+
+const debouncedFetch = debounce(fetchData, 1000);
+
+window.addEventListener("resize", debouncedFetch);
+`);
 
   const onChange = React.useCallback((value, viewUpdate) => {
     const init = () => {
@@ -41,7 +69,7 @@ const Editor = ({ socketRef, roomId }) => {
   }, []);
   return (
     <div>
-      <div>
+      <div className="flex justify-between items-center bg-gray-800 p-2">
         <select onChange={(e) => setLanguage(e.target.value)}>
           <option value="javascript">JavaScript</option>
           <option value="python">Python</option>
@@ -50,6 +78,13 @@ const Editor = ({ socketRef, roomId }) => {
           <option value="html">HTML</option>
           <option value="css">CSS</option>
           <option value="markdown">Markdown</option>
+        </select>
+        <select onChange={(e) => setTheme(e.target.value)}>
+          <option value="dracula">Dracula</option>
+          <option value="okaidia">Okaidia</option>
+          <option value="monokai">Monokai</option>
+          <option value="nord">Nord</option>
+          <option value="tokyoNight">Tokyo Night</option>
         </select>
       </div>
       <CodeMirror
@@ -62,7 +97,14 @@ const Editor = ({ socketRef, roomId }) => {
         }}
         extensions={[languageMap[language]]}
         onChange={onChange}
-        theme={dracula}
+        theme={themeMap[theme]}
+        basicSetup={{
+          lineNumbers: true,
+          highlightActiveLine: true,
+          highlightSelectionMatches: true,
+          foldGutter: true,
+          lint: true,
+        }}
       />
     </div>
   );
