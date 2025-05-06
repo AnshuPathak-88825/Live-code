@@ -44,7 +44,6 @@ io.on("connection", (socket) => {
     });
   });
   socket.on(ACTION.CODE_CHANGE, ({ roomId, value }) => {
-    console.log(value)
     io.to(roomId).emit(ACTION.CODE_CHANGE,{
       value
     })
