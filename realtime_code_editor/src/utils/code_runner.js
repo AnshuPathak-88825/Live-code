@@ -1,6 +1,8 @@
 import axios from "axios";
 
+const judge0ApiKey = process.env.REACT_APP_JUDGE0_API_KEY;
 export const coderunner = async (data, input, language_id) => {
+  console.log(judge0ApiKey);
   const options = {
     method: "POST",
     url: "https://judge0-ce.p.rapidapi.com/submissions",
@@ -10,7 +12,7 @@ export const coderunner = async (data, input, language_id) => {
       fields: "*",
     },
     headers: {
-      "x-rapidapi-key": process.env.REACT_APP_JUDGE0_API_KEY,
+      "x-rapidapi-key": judge0ApiKey,
       "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
       "Content-Type": "application/json",
     },
@@ -31,7 +33,7 @@ export const coderunner = async (data, input, language_id) => {
       {
         headers: {
           "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-          "x-rapidapi-key": process.env.REACT_APP_JUDGE0_API_KEY,
+          "x-rapidapi-key": judge0ApiKey,
         },
       }
     );

@@ -151,6 +151,7 @@ window.addEventListener("resize", debouncedFetch);
           </button>
         </div>
         <div>{loader && <div>loading..</div>}</div>
+        <div>{!loader && output && <div>{output}</div>}</div>
         <div>{!loader && error && <div>{error}</div>}</div>
       </div>
     </div>
