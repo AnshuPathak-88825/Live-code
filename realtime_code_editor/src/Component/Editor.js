@@ -14,18 +14,74 @@ import { okaidia } from "@uiw/codemirror-theme-okaidia";
 import { monokai } from "@uiw/codemirror-theme-monokai";
 import { nord } from "@uiw/codemirror-theme-nord";
 import { tokyoNight } from "@uiw/codemirror-theme-tokyo-night";
-
+import { sql } from "@codemirror/lang-sql";
+import { php } from "@codemirror/lang-php";
+import { rust } from "@codemirror/lang-rust";
+import {go} from "@codemirror/lang-go";
 import ACTIONS from "../Actions";
 const Editor = ({ socketRef, roomId }) => {
-  const languageMap = {
-    javascript: { language: javascript(), id: 102 },
-    python: { language: python(), id: 92 },
-    java: { language: java(), id: 91 },
-    cpp: { language: cpp(), id: 105 },
-    html: { language: html(), id: 102 },
-    css: { language: css(), id: 102 },
-    markdown: { language: markdown(), id: 102 },
-  };
+  const languageMap = [
+    {
+      name: "javascript",
+      language: javascript(),
+      id: 102,
+      code: `console.log("hello")`,
+    },
+
+    { name: "python", language: python(), id: 92, code: `print("hello")` },
+    {
+      name: "java",
+      language: java(),
+      id: 91,
+      code: `import java.util.*;
+public class Main {
+  public static void main(String[] args) {
+    System.out.println("Hello");
+    }
+  }`,
+    },
+    {
+      name: "cpp",
+      language: cpp(),
+      id: 105,
+      code: `#include <iostream>
+using namespace std;
+int main() {
+  cout << "Hello World" << endl;
+  return 0;
+}`,
+    },
+    {
+      name: "sql",
+      language: sql(),
+      id: 82,
+      code: `SELECT * FROM users;`,
+    },
+    {
+      name: "php",
+      language: php(),
+      id:98,
+      code: `<?php
+echo "Hello World!"; ?>`,
+    },{
+      name: "rust",
+      language: rust(),
+      id: 108,
+      code: `fn main() {
+    println!("Hello, world!");  
+    }`,
+    },
+    {
+      name: "go",
+      language: go(),
+      id: 107,
+      code: `package main
+import "fmt"
+func main() {
+    fmt.Println("Hello, World!")
+}`,
+    }
+  ];
   const themeMap = {
     dracula: dracula,
     okaidia: okaidia,
@@ -33,28 +89,14 @@ const Editor = ({ socketRef, roomId }) => {
     nord: nord,
     tokyoNight: tokyoNight,
   };
-  const [language, setLanguage] = useState("javascript");
+  const [language, setLanguage] = useState(javascript());
+  const [languageId, setLanguageId] = useState(0);
   const [input, setInput] = useState("");
   const [theme, setTheme] = useState("dracula");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
   const [loader, setLoader] = useState(false);
-  const [code, setcode] = useState(`function debounce(func, delay) {
-let timer;
-  return function(...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => func.apply(this, args), delay);
-  };
-}
-
-const fetchData = () => {
-  console.log("Fetching data from server...");
-};
-
-const debouncedFetch = debounce(fetchData, 1000);
-
-window.addEventListener("resize", debouncedFetch);
-`);
+  const [code, setcode] = useState(languageMap[languageId].code);
 
   const onChange = React.useCallback((value, viewUpdate) => {
     const init = () => {
@@ -76,7 +118,7 @@ window.addEventListener("resize", debouncedFetch);
     setLoader(true);
     setOutput("");
     setError("");
-    coderunner(code, input, languageMap[language].id)
+    coderunner(code, input, languageMap[languageId].id)
       .then((result) => {
         console.log(result);
         if (result.decodedOutput) {
@@ -100,14 +142,19 @@ window.addEventListener("resize", debouncedFetch);
   return (
     <div>
       <div className="flex justify-between items-center bg-gray-800 p-2">
-        <select onChange={(e) => setLanguage(e.target.value)}>
-          <option value="javascript">JavaScript</option>
-          <option value="python">Python</option>
-          <option value="java">Java</option>
-          <option value="cpp">C++</option>
-          <option value="html">HTML</option>
-          <option value="css">CSS</option>
-          <option value="markdown">Markdown</option>
+        <select
+          onChange={(e) => {
+            const index = e.target.value;
+            console.log(index);
+            setcode(languageMap[index].code);
+            setLanguageId(index);
+          }}
+        >
+          {languageMap.map((lang, index) => (
+            <option key={lang.id} value={index}>
+              {lang.name}
+            </option>
+          ))}
         </select>
         <select onChange={(e) => setTheme(e.target.value)}>
           <option value="dracula">Dracula</option>
@@ -125,7 +172,7 @@ window.addEventListener("resize", debouncedFetch);
           lineHeight: 5,
           paddingTop: "20px",
         }}
-        extensions={[languageMap[language].language]}
+        extensions={[languageMap[languageId].language]}
         onChange={onChange}
         theme={themeMap[theme]}
         basicSetup={{
