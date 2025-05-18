@@ -114,10 +114,12 @@ func main() {
     if (!socketRef.current) return;
 
     const handleCodeChange = ({ value }) => {
-        setcode(value);
+      setcode(value);
     };
     socketRef.current.on(ACTIONS.CODE_CHANGE, handleCodeChange);
-
+    socketRef.current.on(ACTIONS.LANGUAGE_CHANGE, ({ languageId }) => {
+      setLanguageId(languageId);
+    });
     return () => {
       socketRef.current.off(ACTIONS.CODE_CHANGE, handleCodeChange);
     };
@@ -152,12 +154,16 @@ func main() {
   return (
     <div>
       <div className="flex justify-between items-center bg-gray-800 p-2">
-        <select
+        <select value={languageId}
           onChange={(e) => {
             const index = e.target.value;
             setcode(languageMap[index].code);
             setLanguageId(index);
             onCodechange(languageMap[languageId].code);
+            socketRef.current.emit(ACTIONS.LANGUAGE_CHANGE, {
+              roomId: roomId,
+              languageId: index
+            })
           }}
         >
           {languageMap.map((lang, index) => (

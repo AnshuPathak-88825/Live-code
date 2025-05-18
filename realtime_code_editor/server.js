@@ -51,6 +51,11 @@ io.on("connection", (socket) => {
   socket.on(ACTION.SYNC_CODE, ({ socketid, code }) => {
     io.to(socketid).emit(ACTION.CODE_CHANGE, {value: code });
   });
+  socket.on(ACTION.LANGUAGE_CHANGE, ({ roomId, languageId }) => {
+    io.to(roomId).emit(ACTION.LANGUAGE_CHANGE, {
+      languageId
+    });
+  });
 });
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
