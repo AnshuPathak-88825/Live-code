@@ -98,22 +98,33 @@ func main() {
   const [loader, setLoader] = useState(false);
   const [code, setcode] = useState(languageMap[languageId].code);
 
-  const onChange = React.useCallback((value, viewUpdate) => {
-    const init = () => {
-      socketRef.current.emit(ACTIONS.CODE_CHANGE, {
-        roomId,
-        value,
-      });
-      socketRef.current.on(ACTIONS.CODE_CHANGE, ({ roomId, value }) => {
-        console.log(value);
-        setcode(value);
-      });
-    };
+  const onChange = React.useCallback(
+    (value) => {
+      setcode(value);
+      if (socketRef.current) {
+        socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+          roomId,
+          value,
+        });
+      }
+    },
+  );
 
-    if (socketRef.current != null) {
-      init();
-    }
-  }, []);
+  useEffect(() => {
+    if (!socketRef.current) return;
+
+    const handleCodeChange = ({ value }) => {
+    console.log("socketRef.current", socketRef.current);
+
+        setcode(value);
+    };
+    socketRef.current.on(ACTIONS.CODE_CHANGE, handleCodeChange);
+
+    return () => {
+      socketRef.current.off(ACTIONS.CODE_CHANGE, handleCodeChange);
+    };
+  }, [socketRef.current]);
+
   const runCode = () => {
     setLoader(true);
     setOutput("");
