@@ -48,6 +48,9 @@ io.on("connection", (socket) => {
       value
     })
   });
+  socket.on(ACTION.SYNC_CODE, ({ socketid, code }) => {
+    io.to(socketid).emit(ACTION.CODE_CHANGE, {value: code });
+  });
 });
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {

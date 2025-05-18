@@ -19,7 +19,7 @@ import { php } from "@codemirror/lang-php";
 import { rust } from "@codemirror/lang-rust";
 import {go} from "@codemirror/lang-go";
 import ACTIONS from "../Actions";
-const Editor = ({ socketRef, roomId }) => {
+const Editor = ({ socketRef, roomId,onCodechange }) => {
   const languageMap = [
     {
       name: "javascript",
@@ -101,6 +101,7 @@ func main() {
   const onChange = React.useCallback(
     (value) => {
       setcode(value);
+      onCodechange(value);
       if (socketRef.current) {
         socketRef.current.emit(ACTIONS.CODE_CHANGE, {
           roomId,
@@ -114,8 +115,6 @@ func main() {
     if (!socketRef.current) return;
 
     const handleCodeChange = ({ value }) => {
-    console.log("socketRef.current", socketRef.current);
-
         setcode(value);
     };
     socketRef.current.on(ACTIONS.CODE_CHANGE, handleCodeChange);
@@ -131,7 +130,6 @@ func main() {
     setError("");
     coderunner(code, input, languageMap[languageId].id)
       .then((result) => {
-        console.log(result);
         if (result.decodedOutput) {
           setOutput(result.decodedOutput);
         } else if (result.decodedStderr) {
@@ -156,7 +154,6 @@ func main() {
         <select
           onChange={(e) => {
             const index = e.target.value;
-            console.log(index);
             setcode(languageMap[index].code);
             setLanguageId(index);
           }}

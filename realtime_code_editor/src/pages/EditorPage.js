@@ -9,7 +9,8 @@ const EditorPage = () => {
   const navigate = useNavigate();
   const socketRef = useRef(null);
   const location = useLocation();
-  const roomId=location.state.roomId;
+  const roomId = location.state.roomId;
+  const codeRef = useRef(null);
   const [clients, setclients] = useState([
     { socketId: 1, username: "Rakesh k" },
     { socketId: 2, username: "Aanshu" },
@@ -37,6 +38,10 @@ const EditorPage = () => {
         ({ clients, Username, socketid }) => {
           if (Username != location.state.UserName) {
             toast.success(`${Username} joined`);
+            socketRef.current.emit(ACTIONS.SYNC_CODE, {
+              code: codeRef.current,
+              socketid: socketid,
+            });
           }
           setclients(clients);
         }
@@ -52,7 +57,6 @@ const EditorPage = () => {
     };
 
     if (!location.state) {
-      console.log(location);
       return navigate("/");
     }
     init();
@@ -87,7 +91,13 @@ const EditorPage = () => {
         <a href="/" className="btn leaveBtn">Leave</a>
       </div>
       <div className="editorwrap">
-        <Editor socketRef={socketRef} roomId={roomId}/>
+        <Editor
+          socketRef={socketRef}
+          roomId={roomId}
+          onCodechange={(code) => {
+            codeRef.current = code;
+          }}
+        />
       </div>
     </div>
   );
