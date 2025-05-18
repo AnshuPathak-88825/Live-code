@@ -89,7 +89,6 @@ func main() {
     nord: nord,
     tokyoNight: tokyoNight,
   };
-  const [language, setLanguage] = useState(javascript());
   const [languageId, setLanguageId] = useState(0);
   const [input, setInput] = useState("");
   const [theme, setTheme] = useState("dracula");
@@ -123,7 +122,9 @@ func main() {
       socketRef.current.off(ACTIONS.CODE_CHANGE, handleCodeChange);
     };
   }, [socketRef.current]);
-
+  useEffect(()=>{
+    onCodechange(languageMap[languageId].code);
+  },[]);
   const runCode = () => {
     setLoader(true);
     setOutput("");
@@ -156,6 +157,7 @@ func main() {
             const index = e.target.value;
             setcode(languageMap[index].code);
             setLanguageId(index);
+            onCodechange(languageMap[languageId].code);
           }}
         >
           {languageMap.map((lang, index) => (
