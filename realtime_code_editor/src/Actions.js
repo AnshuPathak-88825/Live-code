@@ -6,5 +6,6 @@ const ACTIONS={
     SYNC_CODE:'sync-code',
     LEAVE:'leave',
     LANGUAGE_CHANGE:'language-change',
+    THEME_CHANGE:'theme-change',
 };
 module.exports=ACTIONS;

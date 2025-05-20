@@ -99,6 +99,7 @@ const EditorPage = () => {
           }}
         />
       </div>
+      <Chats/>
     </div>
   );
 };

@@ -120,6 +120,9 @@ func main() {
     socketRef.current.on(ACTIONS.LANGUAGE_CHANGE, ({ languageId }) => {
       setLanguageId(languageId);
     });
+    socketRef.current.on(ACTIONS.THEME_CHANGE, ({ theme }) => {
+      setTheme(theme);
+    });
     return () => {
       socketRef.current.off(ACTIONS.CODE_CHANGE, handleCodeChange);
     };
@@ -172,7 +175,9 @@ func main() {
             </option>
           ))}
         </select>
-        <select onChange={(e) => setTheme(e.target.value)}>
+        <select value={theme} onChange={(e) =>{setTheme(e.target.value)
+          socketRef.current.emit(ACTIONS.THEME_CHANGE,{roomId:roomId,theme:e.target.value})
+        } }>
           <option value="dracula">Dracula</option>
           <option value="okaidia">Okaidia</option>
           <option value="monokai">Monokai</option>

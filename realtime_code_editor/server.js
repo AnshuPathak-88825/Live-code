@@ -56,6 +56,11 @@ io.on("connection", (socket) => {
       languageId
     });
   });
+  socket.on(ACTION.THEME_CHANGE, ({ roomId, theme }) => {
+    io.to(roomId).emit(ACTION.THEME_CHANGE, {
+      theme
+    });
+  });
 });
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
