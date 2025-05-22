@@ -115,6 +115,7 @@ func main() {
 
     const handleCodeChange = ({ value }) => {
       setcode(value);
+      onCodechange(value);
     };
     socketRef.current.on(ACTIONS.CODE_CHANGE, handleCodeChange);
     socketRef.current.on(ACTIONS.LANGUAGE_CHANGE, ({ languageId }) => {
@@ -128,7 +129,7 @@ func main() {
     };
   }, [socketRef.current]);
   useEffect(()=>{
-    onCodechange(languageMap[languageId].code);
+    onCodechange(code);
   },[]);
   const runCode = () => {
     setLoader(true);
