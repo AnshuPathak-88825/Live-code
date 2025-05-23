@@ -19,7 +19,7 @@ import { php } from "@codemirror/lang-php";
 import { rust } from "@codemirror/lang-rust";
 import {go} from "@codemirror/lang-go";
 import ACTIONS from "../Actions";
-const Editor = ({ socketRef, roomId,onCodechange }) => {
+const Editor = ({ socketRef, roomId,onCodechange,onLanguageChange, onThemeChange}) => {
   const languageMap = [
     {
       name: "javascript",
@@ -128,9 +128,7 @@ func main() {
       socketRef.current.off(ACTIONS.CODE_CHANGE, handleCodeChange);
     };
   }, [socketRef.current]);
-  useEffect(()=>{
-    onCodechange(code);
-  },[]);
+  
   const runCode = () => {
     setLoader(true);
     setOutput("");
@@ -163,6 +161,7 @@ func main() {
             const index = e.target.value;
             setcode(languageMap[index].code);
             setLanguageId(index);
+            onLanguageChange(index);
             onCodechange(languageMap[languageId].code);
             socketRef.current.emit(ACTIONS.LANGUAGE_CHANGE, {
               roomId: roomId,
@@ -177,6 +176,7 @@ func main() {
           ))}
         </select>
         <select value={theme} onChange={(e) =>{setTheme(e.target.value)
+        onThemeChange(e.target.value);
           socketRef.current.emit(ACTIONS.THEME_CHANGE,{roomId:roomId,theme:e.target.value})
         } }>
           <option value="dracula">Dracula</option>

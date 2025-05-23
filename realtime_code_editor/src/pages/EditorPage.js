@@ -10,7 +10,9 @@ const EditorPage = () => {
   const socketRef = useRef(null);
   const location = useLocation();
   const roomId = location.state.roomId;
-  const codeRef = useRef(null);
+  const codeRef = useRef(`console.log("hello")`);
+  const languageRef = useRef(0);
+  const themeRef=useRef("dracula");
   const [clients, setclients] = useState([
     { socketId: 1, username: "Rakesh k" },
     { socketId: 2, username: "Aanshu" },
@@ -38,10 +40,12 @@ const EditorPage = () => {
         ({ clients, Username, socketid }) => {
           if (Username != location.state.UserName) {
             toast.success(`${Username} joined`);
-            socketRef.current.emit(ACTIONS.SYNC_CODE, {
+            socketRef.current.emit(ACTIONS.SYNC,{
               code: codeRef.current,
               socketid: socketid,
-            });
+              languageId: languageRef.current,
+              theme: themeRef.current
+            })
           }
           setclients(clients);
         }
@@ -96,6 +100,12 @@ const EditorPage = () => {
           roomId={roomId}
           onCodechange={(code) => {
             codeRef.current = code;
+          }}
+          onLanguageChange={(languageId)=>{
+            languageRef.current=languageId;
+          }}
+          onThemeChange={(theme)=>{
+            themeRef.current=theme;
           }}
         />
       </div>

@@ -48,8 +48,10 @@ io.on("connection", (socket) => {
       value
     })
   });
-  socket.on(ACTION.SYNC_CODE, ({ socketid, code }) => {
+  socket.on(ACTION.SYNC,({socketid, code, languageId, theme})=>{
     io.to(socketid).emit(ACTION.CODE_CHANGE, {value: code });
+    io.to(socketid).emit(ACTION.LANGUAGE_CHANGE, {languageId});
+    io.to(socketid).emit(ACTION.THEME_CHANGE, {theme});
   });
   socket.on(ACTION.LANGUAGE_CHANGE, ({ roomId, languageId }) => {
     io.to(roomId).emit(ACTION.LANGUAGE_CHANGE, {
